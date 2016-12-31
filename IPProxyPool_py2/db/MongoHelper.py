@@ -7,7 +7,7 @@ from db.ISqlHelper import ISqlHelper
 class MongoHelper(ISqlHelper):
 
     def __init__(self):
-        self.client = pymongo.MongoClient(DB_CONFIG['DB_CONNECT_STRING'])
+        self.client = pymongo.MongoClient(DB_CONFIG['DB_CONNECT_STRING'], connect=False)
 
     def init_db(self):
         self.db = self.client.proxy
