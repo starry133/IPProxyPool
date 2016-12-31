@@ -70,15 +70,7 @@ def detect_list(selfip,proxy,queue2=None):
     ip = proxy['ip']
     port = proxy['port']
     proxies={"http": "http://%s:%s"%(ip,port),"https": "http://%s:%s"%(ip,port)}
-    # proxyType = checkProxyType(selfip,proxies)
-    # if proxyType==3:
-    #     logger.info('failed %s:%s'%(ip,port))
-    #     proxy = None
-    #     queue2.put(proxy)
-    #     return proxy
-    # else:
-    #     proxy['type']=proxyType
-    proxy['type']=0
+    
     start = time.time()
     try:
         r = requests.get(url=TEST_URL,headers=config.HEADER,timeout=config.TIMEOUT,proxies=proxies)
@@ -88,6 +80,19 @@ def detect_list(selfip,proxy,queue2=None):
         else:
             speed = round(time.time()-start,2)
             proxy['speed']=speed
+            proxyType = checkProxyType(selfip,proxies)
+            proxy['type'] = proxyType
+            '''
+            if proxyType==3:
+                logger.info('failed %s:%s'%(ip,port))
+                #目前找到的测代理的都是国外网站访问不稳定，应该以国内网站测试作为是否可用的依据
+                #proxy = None
+                queue2.put(proxy)
+                return proxy
+            else:
+                proxy['type']=proxyType
+            '''
+            
     except Exception,e:
             proxy = None
 
@@ -98,36 +103,29 @@ def detect_list(selfip,proxy,queue2=None):
 def checkProxyType(selfip,proxies):
     '''
     用来检测代理的类型，突然发现，免费网站写的信息不靠谱，还是要自己检测代理的类型
-    :param proxies: 代理(0 高匿，1 匿名，2 透明 3 无效代理
+    用的是腾讯服务器很多国外网站无法访问，试了很多找到一个目前能用的网站:'http://www.lagado.com/proxy-test'
+    发现在校园网内国际出口ip和国内出口ip是不同的
+    还没有细分析是检测网站返回的信息，粗略分为两种
+    :param proxies: 代理(0 匿名，1 透明
     :return:
     '''
 
     try:
-
+        test_str = '\nThis request appears NOT to have come via a proxy.\n'
         r = requests.get(url=config.TEST_PROXY,headers=config.HEADER,timeout=config.TIMEOUT,proxies=proxies)
         if r.ok:
             root = etree.HTML(r.text)
-            ip = root.xpath('.//center[2]/table/tr[3]/td[2]')[0].text
-            http_x_forwared_for = root.xpath('.//center[2]/table/tr[8]/td[2]')[0].text
-            http_via = root.xpath('.//center[2]/table/tr[9]/td[2]')[0].text
-            # print ip,http_x_forwared_for,http_via,type(http_via),type(http_x_forwared_for)
-            if ip==selfip:
-                return 3
-            if http_x_forwared_for is None and http_via is None:
+            proxy = root.xpath('//*[@id="summary"]/p[1]/text()')[0]
+            print proxy
+            if proxy==test_str:
                 return 0
-            if http_via != None and http_x_forwared_for.find(selfip)== -1:
+            else:
                 return 1
-
-            if http_via != None and http_x_forwared_for.find(selfip)!= -1:
-                return 2
         return 3
-
-
 
     except Exception,e:
+        print 'The proxy test website becomes invalid! or not'
         return 3
-
-
 
 
 def getMyIP():

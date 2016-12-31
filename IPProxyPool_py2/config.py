@@ -187,4 +187,4 @@ HEADER = {
 TEST_URL='http://ip.chinaz.com/getip.aspx'
 # #添加的检测关键字，修复测试的代理是否能真正的访问到目的网址
 # TEST_KEY = '站长工具'
-TEST_PROXY='http://www.stilllistener.com/checkpoint1/test11/'
+TEST_PROXY='http://www.lagado.com/proxy-test'

@@ -8,7 +8,10 @@ from validator.Validator import validator
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-
+'''
+q1: ips that crawled from free proxy websites
+q2: ips that have been validated
+'''
 
 
 if __name__=="__main__":
