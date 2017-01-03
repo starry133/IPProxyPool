@@ -3,7 +3,6 @@
 from lxml import etree
 import requests
 import json
-import config
 
 HEADER = {
     'User-Agent': r"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.11",

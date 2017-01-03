@@ -46,7 +46,7 @@ for ip_port in ip_ports:
             if proxy == 'No Proxy Detected':
                 https_anony_ips.append(ip_port)
         '''
-        r = requests.get(url='http://www.lagado.com/proxy-test',headers=config.HEADER,timeout=config.TIMEOUT,proxies=proxies)
+        r = requests.get(url='http://www.lagado.com/proxy-test',headers=HEADER,timeout=6,proxies=proxies)
         
         if r.ok:
             root = etree.HTML(r.text)
