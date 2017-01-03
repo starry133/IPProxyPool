@@ -82,7 +82,7 @@ def detect_list(selfip,proxy,queue2=None):
             speed = round(time.time()-start,2)
             proxy['speed']=speed
             proxyType = checkProxyType(selfip,proxies)
-            proxy['type'] = proxyType
+            proxy['types'] = proxyType
             sites = checkSites(proxies, CHECK_SITES)
             proxy['sites'] = sites
             '''
