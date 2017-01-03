@@ -120,7 +120,7 @@ API_PORT=8000
 不需要检测ip是否已经存在，因为会定时清理
 '''
 UPDATE_TIME=60*60#每一个小时检测一次是否有代理ip失效
-MINNUM = 40 #当有效的ip值小于一个时 需要启动爬虫进行爬取
+MINNUM = 80 #当有效的ip值小于一个时 需要启动爬虫进行爬取
 MAXTIME = 3*24*60 #当爬取存储开始一直使用的最大时间，如果超过这个时间，都删除
 
 TIMEOUT = 5#socket延时
@@ -187,4 +187,11 @@ HEADER = {
 TEST_URL='http://ip.chinaz.com/getip.aspx'
 # #添加的检测关键字，修复测试的代理是否能真正的访问到目的网址
 # TEST_KEY = '站长工具'
+
+# 检查代理类型，注意：国外网站，在不同网络环境下可能会失效
 TEST_PROXY='http://www.lagado.com/proxy-test'
+
+# 能访问特定网站的代理IP数量很少，目的是检查对特定网站能否访问
+# 若能访问，将CHECK_SITES词典里的键值标记到一个可访问一个数组里
+# 此为订制服务，目前的想法是简化爬虫，验证放在这里
+CHECK_SITES={'JD':'https://list.jd.com/list.html?cat=9987,653,655'}

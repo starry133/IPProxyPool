@@ -7,7 +7,7 @@ import gevent
 from lxml import etree
 import requests
 import time
-from config import TEST_URL
+from config import TEST_URL, CHECK_SITES
 import config
 from db.DataStore import sqlhelper
 from util.exception import Test_URL_Fail
@@ -20,15 +20,15 @@ monkey.patch_all()
 
 def detect_from_db(myip,proxy,proxies_set):
     proxy_dict = {'ip':proxy[0],'port':proxy[1]}
-    result = detect_list(myip,proxy_dict)
-    if result:
+    sites = detect_list(myip,proxy_dict)
+    if sites:
         if proxy[2]<60000:
             score = proxy[2] + 1
         else:
             score = 60000
         proxy_str ='%s:%s'%(proxy[0],proxy[1])
         proxies_set.add(proxy_str)
-        sqlhelper.update({'ip':proxy[0],'port':proxy[1]},{'score':score})
+        sqlhelper.update({'ip':proxy[0],'port':proxy[1]},{'score':score,'sites':sites})
     else:
         sqlhelper.delete({'ip':proxy[0],'port':proxy[1]})
 
@@ -69,9 +69,10 @@ def detect_list(selfip,proxy,queue2=None):
     '''
     ip = proxy['ip']
     port = proxy['port']
-    proxies={"http": "http://%s:%s"%(ip,port),"https": "http://%s:%s"%(ip,port)}
+    proxies={"http": "http://%s:%s"%(ip,port),"http": "http://%s:%s"%(ip,port)}
     
     start = time.time()
+    sites = None
     try:
         r = requests.get(url=TEST_URL,headers=config.HEADER,timeout=config.TIMEOUT,proxies=proxies)
 
@@ -82,6 +83,8 @@ def detect_list(selfip,proxy,queue2=None):
             proxy['speed']=speed
             proxyType = checkProxyType(selfip,proxies)
             proxy['type'] = proxyType
+            sites = checkSites(proxies, CHECK_SITES)
+            proxy['sites'] = sites
             '''
             if proxyType==3:
                 logger.info('failed %s:%s'%(ip,port))
@@ -98,7 +101,7 @@ def detect_list(selfip,proxy,queue2=None):
 
     if queue2:
         queue2.put(proxy)
-    return proxy
+    return sites
 
 def checkProxyType(selfip,proxies):
     '''
@@ -116,7 +119,7 @@ def checkProxyType(selfip,proxies):
         if r.ok:
             root = etree.HTML(r.text)
             proxy = root.xpath('//*[@id="summary"]/p[1]/text()')[0]
-            print proxy
+            #print proxy
             if proxy==test_str:
                 return 0
             else:
@@ -124,9 +127,23 @@ def checkProxyType(selfip,proxies):
         return 3
 
     except Exception,e:
-        print 'The proxy test website becomes invalid! or not'
+        #print 'The proxy test website becomes invalid! or not'
         return 3
 
+
+def checkSites(proxies, CHECK_SITES):
+    '''
+    检查对特定网站能否访问,若能访问，将CHECK_SITES词典里的键值标记到一个可访问一个数组里
+    '''
+    sites = []
+    for key, value in CHECK_SITES.iteritems():
+        try:
+            r = requests.get(url=value,headers=config.HEADER,timeout=config.TIMEOUT,proxies=proxies)
+            if r.ok:
+                sites.append(key)
+        except Exception,e:
+            pass
+    return sites
 
 def getMyIP():
     try:

@@ -77,6 +77,7 @@ class Html_Parser(object):
                 addr = self.ips.getIpAddr(self.ips.str2ip(ip))
                 country = ''
                 area = ''
+                sites = []
                 if addr.find(u'省')!=-1 or self.AuthCountry(addr):
                     country = u'中国'
                     area = addr
@@ -89,7 +90,7 @@ class Html_Parser(object):
             # ip，端口，类型(0高匿名，1透明)，protocol(0 http,1 https http),country(国家),area(省市),updatetime(更新时间)
 
             # proxy ={'ip':ip,'port':int(port),'type':int(type),'protocol':int(protocol),'country':country,'area':area,'updatetime':updatetime,'speed':100}
-            proxy ={'ip':ip,'port':int(port),'types':int(type),'protocol':int(protocol),'country':country,'area':area,'speed':100}
+            proxy ={'ip':ip,'port':int(port),'types':int(type),'protocol':int(protocol),'country':country,'area':area,'speed':100,'sites':sites}
             proxylist.append(proxy)
         return proxylist
 
@@ -120,13 +121,14 @@ class Html_Parser(object):
                 addr = self.ips.getIpAddr(self.ips.str2ip(ip))
                 country = ''
                 area = ''
+                sites = []
                 if addr.find(u'省')!=-1 or self.AuthCountry(addr):
                     country = u'中国'
                     area = addr
                 else:
                     country = addr
                     area = ''
-                proxy ={'ip':ip,'port':port,'types':type,'protocol':protocol,'country':country,'area':area,'speed':100}
+                proxy ={'ip':ip,'port':port,'types':type,'protocol':protocol,'country':country,'area':area,'speed':100,'sites':sites}
 
                 proxylist.append(proxy)
             return proxylist
@@ -161,13 +163,14 @@ class Html_Parser(object):
                 addr = self.ips.getIpAddr(self.ips.str2ip(ip))
                 country = ''
                 area = ''
+                sites = []
                 if addr.find(u'省')!=-1 or self.AuthCountry(addr):
                     country = u'中国'
                     area = addr
                 else:
                     country = addr
                     area = ''
-                proxy ={'ip':ip,'port':int(port),'types':type,'protocol':protocol,'country':country,'area':area,'speed':100}
+                proxy ={'ip':ip,'port':int(port),'types':type,'protocol':protocol,'country':country,'area':area,'speed':100,'sites':sites}
 
                 proxylist.append(proxy)
             return proxylist
