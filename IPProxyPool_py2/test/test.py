@@ -15,6 +15,7 @@ HEADER = {
     'Connection': 'keep-alive',
     'Accept-Encoding': 'gzip, deflate',
 }
+test_str = '\nThis request appears NOT to have come via a proxy.\n'
 
 r = requests.get('http://127.0.0.1:8000/?')
 ip_ports = json.loads(r.text)
