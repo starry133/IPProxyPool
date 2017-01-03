@@ -5,7 +5,13 @@ import requests
 import json
 import config
 
-
+HEADER = {
+    'User-Agent': r"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.11",
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'en-US,en;q=0.5',
+    'Connection': 'keep-alive',
+    'Accept-Encoding': 'gzip, deflate',
+}
 
 '''
 用来检测代理的类型，突然发现，免费网站写的信息不靠谱，还是要自己检测代理的类型
@@ -29,7 +35,7 @@ for ip_port in ip_ports:
     }
 
     try:
-        r = requests.get(url='http://www.lagado.com/proxy-test',headers=config.HEADER,timeout=config.TIMEOUT,proxies=proxies)
+        r = requests.get(url='http://www.lagado.com/proxy-test',headers=HEADER,timeout=6,proxies=proxies)
         
         if r.ok:
             root = etree.HTML(r.text)

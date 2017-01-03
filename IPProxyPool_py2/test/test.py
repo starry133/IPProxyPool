@@ -7,7 +7,14 @@ Check the type of these proxies.
 import requests
 import json
 from lxml import etree
-import config
+
+HEADER = {
+    'User-Agent': r"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.11",
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'en-US,en;q=0.5',
+    'Connection': 'keep-alive',
+    'Accept-Encoding': 'gzip, deflate',
+}
 
 r = requests.get('http://127.0.0.1:8000/?')
 ip_ports = json.loads(r.text)
@@ -28,7 +35,7 @@ for ip_port in ip_ports:
         'https':'http://%s:%s'%(ip,port)
     }
     try:
-        jdr = requests.get('https://list.jd.com/list.html?cat=9987,653,655',headers=config.HEADER, proxies=proxies, timeout=6)
+        jdr = requests.get('https://list.jd.com/list.html?cat=9987,653,655',headers=HEADER, proxies=proxies, timeout=6)
         if jdr.ok:
             https_ips.append(ip_port)
         '''
