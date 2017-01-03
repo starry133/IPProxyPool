@@ -20,7 +20,7 @@ class MongoHelper(ISqlHelper):
 
     def insert(self,value=None):
       if value:
-          proxy = dict(ip=value['ip'],port=value['port'],types=value['types'],protocol=value['protocol'],country = value['country'],
+          proxy = dict(ip=value['ip'],port=value['port'],type=value['type'],protocol=value['protocol'],country = value['country'],
                        area=value['area'],speed=value['speed'],sites=value['sites'],score=0)
           self.proxys.insert(proxy)
 
@@ -42,16 +42,16 @@ class MongoHelper(ISqlHelper):
         else:
             return {'updateNum':'fail'}
 
-    def select(self, count=None,conditions=None):
-        if count:
-            count = int(count)
+    def select(self, num=None,conditions=None):
+        if num:
+            num = int(num)
         else:
-            count=0
-        items =self.proxys.find(filter = conditions,limit = count).sort([("speed",pymongo.ASCENDING),("score",pymongo.DESCENDING)])
+            num=0
+        items =self.proxys.find(filter = conditions).limit(num).count(True).sort([("speed",pymongo.ASCENDING),("score",pymongo.DESCENDING)])
         results = []
         for item in items:
             #result = (item['ip'],item['port'],item['score'])
-            result = (item['ip'],item['port'],item['score'],item['types'],item['sites'])
+            result = (item['ip'],item['port'],item['score'],item['type'],item['sites'])
             results.append(result)
         return results
 

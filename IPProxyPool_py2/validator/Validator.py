@@ -82,7 +82,7 @@ def detect_list(selfip,proxy,queue2=None):
             speed = round(time.time()-start,2)
             proxy['speed']=speed
             proxyType = checkProxyType(selfip,proxies)
-            proxy['types'] = proxyType
+            proxy['type'] = proxyType
             sites = checkSites(proxies, CHECK_SITES)
             proxy['sites'] = sites
             '''
@@ -121,14 +121,14 @@ def checkProxyType(selfip,proxies):
             proxy = root.xpath('//*[@id="summary"]/p[1]/text()')[0]
             #print proxy
             if proxy==test_str:
-                return 0
+                return '0'
             else:
-                return 1
-        return 3
+                return '1'
+        return '3'
 
     except Exception,e:
         #print 'The proxy test website becomes invalid! or not'
-        return 3
+        return '3'
 
 
 def checkSites(proxies, CHECK_SITES):
