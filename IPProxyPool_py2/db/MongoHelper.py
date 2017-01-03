@@ -50,7 +50,8 @@ class MongoHelper(ISqlHelper):
         items =self.proxys.find(filter = conditions,limit = count).sort([("speed",pymongo.ASCENDING),("score",pymongo.DESCENDING)])
         results = []
         for item in items:
-            result = (item['ip'],item['port'],item['score'])
+            #result = (item['ip'],item['port'],item['score'])
+            result = (item['ip'],item['port'],item['score'],item['types'],item['sites'])
             results.append(result)
         return results
 
