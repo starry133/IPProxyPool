@@ -11,7 +11,7 @@ from config import TEST_URL, CHECK_SITES
 import config
 from db.DataStore import sqlhelper
 from util.exception import Test_URL_Fail
-from test.testSites import checkSites
+#from test.testSites import checkSites
 
 
 from gevent import monkey
@@ -69,7 +69,7 @@ def detect_list(selfip,proxy,queue2=None):
     '''
     ip = proxy['ip']
     port = proxy['port']
-    proxies={"http": "http://%s:%s"%(ip,port),"http": "http://%s:%s"%(ip,port)}
+    proxies={"http": "http://%s:%s"%(ip,port),"https": "http://%s:%s"%(ip,port)}
     
     start = time.time()
     sites = None
@@ -82,7 +82,7 @@ def detect_list(selfip,proxy,queue2=None):
             speed = round(time.time()-start,2)
             proxy['speed']=speed
             proxyType = checkProxyType(selfip,proxies)
-            proxy['type'] = proxyType
+            proxy['types'] = proxyType
             sites = checkSites(proxies, CHECK_SITES)
             proxy['sites'] = sites
             '''
@@ -93,7 +93,7 @@ def detect_list(selfip,proxy,queue2=None):
                 queue2.put(proxy)
                 return proxy
             else:
-                proxy['type']=proxyType
+                proxy['types']=proxyType
             '''
             
     except Exception,e:
@@ -130,11 +130,11 @@ def checkProxyType(selfip,proxies):
         #print 'The proxy test website becomes invalid! or not'
         return '3'
 
-'''
+
 def checkSites(proxies, CHECK_SITES):
-    
+    '''
     #检查对特定网站能否访问,若能访问，将CHECK_SITES词典里的键值标记到一个可访问一个数组里
-    
+    '''
     sites = []
     for key, value in CHECK_SITES.iteritems():
         print value
@@ -145,7 +145,7 @@ def checkSites(proxies, CHECK_SITES):
         except Exception,e:
             pass
     return sites
-'''
+
 def getMyIP():
     try:
         r = requests.get(url=config.TEST_URL,headers=config.HEADER,timeout=config.TIMEOUT)

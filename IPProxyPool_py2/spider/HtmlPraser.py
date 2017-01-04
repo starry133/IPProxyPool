@@ -72,7 +72,7 @@ class Html_Parser(object):
                 #     else:
                 #         protocol = 0
                 # else:
-                type='0'
+                types='0'
                 protocol = '0'
                 addr = self.ips.getIpAddr(self.ips.str2ip(ip))
                 country = ''
@@ -90,7 +90,7 @@ class Html_Parser(object):
             # ip，端口，类型(0高匿名，1透明)，protocol(0 http,1 https http),country(国家),area(省市),updatetime(更新时间)
 
             # proxy ={'ip':ip,'port':int(port),'type':int(type),'protocol':int(protocol),'country':country,'area':area,'updatetime':updatetime,'speed':100}
-            proxy ={'ip':ip,'port':int(port),'type':type,'protocol':protocol,'country':country,'area':area,'speed':100,'sites':sites}
+            proxy ={'ip':ip,'port':int(port),'types':types,'protocol':protocol,'country':country,'area':area,'speed':100,'sites':sites}
             proxylist.append(proxy)
         return proxylist
 
@@ -109,7 +109,7 @@ class Html_Parser(object):
                 ip = match[parser['position']['ip']]
                 port = match[parser['position']['port']]
                 #网站的类型一直不靠谱所以还是默认，之后会检测
-                type ='0'
+                types ='0'
                 # if parser['postion']['protocol'] > 0:
                 #     protocol = match[parser['postion']['protocol']]
                 #     if protocol.lower().find('https')!=-1:
@@ -128,7 +128,7 @@ class Html_Parser(object):
                 else:
                     country = addr
                     area = ''
-                proxy ={'ip':ip,'port':port,'type':type,'protocol':protocol,'country':country,'area':area,'speed':100,'sites':sites}
+                proxy ={'ip':ip,'port':port,'types':types,'protocol':protocol,'country':country,'area':area,'speed':100,'sites':sites}
 
                 proxylist.append(proxy)
             return proxylist
@@ -158,7 +158,7 @@ class Html_Parser(object):
                 ip_port = base64.b64decode(match.replace("Proxy('","").replace("')",""))
                 ip = ip_port.split(':')[0]
                 port = ip_port.split(':')[1]
-                type ='0'
+                types ='0'
                 protocol = '0'
                 addr = self.ips.getIpAddr(self.ips.str2ip(ip))
                 country = ''
@@ -170,7 +170,7 @@ class Html_Parser(object):
                 else:
                     country = addr
                     area = ''
-                proxy ={'ip':ip,'port':int(port),'type':type,'protocol':protocol,'country':country,'area':area,'speed':100,'sites':sites}
+                proxy ={'ip':ip,'port':int(port),'types':types,'protocol':protocol,'country':country,'area':area,'speed':100,'sites':sites}
 
                 proxylist.append(proxy)
             return proxylist

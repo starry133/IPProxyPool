@@ -20,7 +20,7 @@ class MongoHelper(ISqlHelper):
 
     def insert(self,value=None):
       if value:
-          proxy = dict(ip=value['ip'],port=value['port'],type=value['type'],protocol=value['protocol'],country = value['country'],
+          proxy = dict(ip=value['ip'],port=value['port'],types=value['types'],protocol=value['protocol'],country = value['country'],
                        area=value['area'],speed=value['speed'],sites=value['sites'],score=0)
           self.proxys.insert(proxy)
 
@@ -51,7 +51,7 @@ class MongoHelper(ISqlHelper):
         results = []
         for item in items:
             #result = (item['ip'],item['port'],item['score'])
-            result = (item['ip'],item['port'],item['score'],item['sites'])#,item['type']
+            result = (item['ip'],item['port'],item['score'])#,item['sites'])#,item['types']
             results.append(result)
         return results
 
