@@ -137,7 +137,6 @@ def checkSites(proxies, CHECK_SITES):
     '''
     sites = []
     for key, value in CHECK_SITES.iteritems():
-        print value
         try:
             r = requests.get(url=value,headers=config.HEADER,timeout=config.TIMEOUT,proxies=proxies)
             if r.ok:
