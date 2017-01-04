@@ -51,7 +51,7 @@ class MongoHelper(ISqlHelper):
         results = []
         for item in items:
             #result = (item['ip'],item['port'],item['score'])
-            result = (item['ip'],item['port'],item['score'],item['type'],item['sites'])
+            result = (item['ip'],item['port'],item['score'],item['sites'])#,item['type']
             results.append(result)
         return results
 
