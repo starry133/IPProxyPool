@@ -11,7 +11,7 @@ from config import TEST_URL, CHECK_SITES
 import config
 from db.DataStore import sqlhelper
 from util.exception import Test_URL_Fail
-
+from test.testSites import checkSites
 
 
 from gevent import monkey
@@ -130,24 +130,22 @@ def checkProxyType(selfip,proxies):
         #print 'The proxy test website becomes invalid! or not'
         return '3'
 
-
+'''
 def checkSites(proxies, CHECK_SITES):
-    '''
-    检查对特定网站能否访问,若能访问，将CHECK_SITES词典里的键值标记到一个可访问一个数组里
-    '''
+    
+    #检查对特定网站能否访问,若能访问，将CHECK_SITES词典里的键值标记到一个可访问一个数组里
+    
     sites = []
     for key, value in CHECK_SITES.iteritems():
         print value
         try:
             r = requests.get(url=value,headers=config.HEADER,timeout=config.TIMEOUT,proxies=proxies)
             if r.ok:
-                print 'r.ok'
                 sites.append(key)
         except Exception,e:
-            print 'exception'
             pass
     return sites
-
+'''
 def getMyIP():
     try:
         r = requests.get(url=config.TEST_URL,headers=config.HEADER,timeout=config.TIMEOUT)
